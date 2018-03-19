@@ -32,7 +32,7 @@ public class Options_ordinateur extends Activity {
 
         Intent intent = getIntent();
         titreOptions = (TextView)findViewById(R.id.titreOptions);
-        titreOptions.setText("Options de " + intent.getStringExtra(Gestion_principale.EXTRA_NOM_PC));
+        titreOptions.setText("Options de " + intent.getStringExtra("NOM"));
 
         ArrayList<String> menu = new ArrayList<>();
         menu.add("Changer la sensibilité");

@@ -29,25 +29,16 @@ import java.util.UUID;
 
 public class Gestion_principale extends Activity {
 
-    //UUID
-    private static final UUID MY_UUID =  UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    //Adresse
+    //Adresse obtenue de la première activité
     private String adresse;
 
-    //Necessaire BT
-    private BluetoothAdapter btAdapter;
-    private BluetoothSocket btSocket;
-
-    //Flux
-    static OutputStream outputStream;
-    static InputStream inputStream;
-
+    //Connexion que l'on instancie pour la première fois
+    private Connexion connexion;
 
 
     TextView nomOrdi = null;
     ListView choix = null;
-    static String EXTRA_NOM_PC = "random";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +47,24 @@ public class Gestion_principale extends Activity {
 
         nomOrdi = (TextView) findViewById(R.id.nomOrdi);
         final Intent intent = getIntent();
-        nomOrdi.setText(intent.getStringExtra(MainActivity.EXTRA));
-        adresse = nomOrdi.getText().toString();
+        nomOrdi.setText(intent.getStringExtra("NOM"));
+        adresse = intent.getStringExtra("ADRESSE");
 
         //PARTIE EXPERIMENTALE POUR LA CONNEXION
-        //connexion();
+
+        Connexion.setAdresse(adresse);
+        connexion = Connexion.getINSTANCE(); //Ici on initialise la connexion entre l'ordi et le téléphone
+
+        //Boite de dialogue après connection
+        new AlertDialog.Builder(Gestion_principale.this)
+                .setTitle("Connexion")
+                .setMessage("La connexion a été créée !")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+
 
         //FIN PARTIE EXPERIMENTALE
 
@@ -86,12 +90,12 @@ public class Gestion_principale extends Activity {
                         break;
                     case 2 :
                         Intent intentDiapo = new Intent(Gestion_principale.this, Diapo.class);
-                        intentDiapo.putExtra("ADRESSE", adresse);
+                        intentDiapo.putExtra("NOM", nomOrdi.getText());
                         startActivity(intentDiapo);
                         break;
                     case 3 :
                         Intent intentOptions = new Intent(Gestion_principale.this, Options_ordinateur.class);
-                        intentOptions.putExtra(Gestion_principale.EXTRA_NOM_PC, nomOrdi.getText());
+                        intentOptions.putExtra("NOM", nomOrdi.getText());
                         startActivity(intentOptions);
                         break;
                     default:
@@ -100,52 +104,6 @@ public class Gestion_principale extends Activity {
             }
         });
 
-    }
-
-    private void connexion() {
-
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        BluetoothDevice PC = btAdapter.getRemoteDevice(adresse);
-
-        try {
-            btSocket = PC.createRfcommSocketToServiceRecord(MY_UUID);
-        } catch (IOException e) {
-            AlertBox("Erreur", "Erreur lors de la création du socket : connexion()");
-        }
-
-        btAdapter.cancelDiscovery();
-
-        try {
-            btSocket.connect();
-        } catch (IOException e) {
-            try {
-                btSocket.close();
-                AlertBox("Erreur", "Erreur lors de l'ouverture du socket");
-            } catch (IOException e1) {
-                AlertBox("Erreur", "Erreur lors de la fermeture du socket suite à l'erreur empechant son ouverture");
-            }
-        }
-
-        try {
-            outputStream = btSocket.getOutputStream();
-            inputStream = btSocket.getInputStream();
-        } catch (IOException e) {
-            AlertBox("Erreur", "Erreur lors de l'ouverture du flux de sortie");
-        }
-
-    }
-
-    //Créée une boite de dialogue pour la gestion des exceptions
-    public void AlertBox(String titre, final String message) {
-        new AlertDialog.Builder(Gestion_principale.this)
-                .setTitle(titre)
-                .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
     }
 
 

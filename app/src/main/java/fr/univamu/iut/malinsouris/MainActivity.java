@@ -36,7 +36,6 @@ public class MainActivity extends FragmentActivity {
     ListView listeOrdis = null;
     Button addOrdi = null;
     TextView textSelection = null;
-    static String EXTRA = "tgducul";
     private Set<BluetoothDevice> appareilsConnus;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
@@ -70,10 +69,12 @@ public class MainActivity extends FragmentActivity {
         appareilsConnus = bluetoothAdapter.getBondedDevices();
 
 
+        final ArrayList<String> ordinateursAdresse = new ArrayList<>();
         final ArrayList<String> ordinateurs = new ArrayList<>();
         for (BluetoothDevice blueDevice : appareilsConnus)
         {
-            ordinateurs.add(blueDevice.getAddress());
+            ordinateursAdresse.add(blueDevice.getAddress());
+            ordinateurs.add(blueDevice.getName());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, ordinateurs);
         listeOrdis = (ListView)findViewById(R.id.ListeOrdi);
@@ -82,7 +83,8 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MainActivity.this, Gestion_principale.class);
-                intent.putExtra(EXTRA, ordinateurs.get(i));
+                intent.putExtra("NOM", ordinateurs.get(i));
+                intent.putExtra("ADRESSE", ordinateursAdresse.get(i));
                 startActivity(intent);
             }
         });
