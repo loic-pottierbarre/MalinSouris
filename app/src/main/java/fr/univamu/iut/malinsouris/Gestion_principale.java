@@ -36,12 +36,12 @@ public class Gestion_principale extends Activity {
     private String adresse;
 
     //Necessaire BT
-    BluetoothAdapter btAdapter;
-    BluetoothSocket btSocket;
+    private BluetoothAdapter btAdapter;
+    private BluetoothSocket btSocket;
 
     //Flux
-    OutputStream outputStream;
-    InputStream inputStream;
+    static OutputStream outputStream;
+    static InputStream inputStream;
 
 
 
@@ -60,7 +60,7 @@ public class Gestion_principale extends Activity {
         adresse = nomOrdi.getText().toString();
 
         //PARTIE EXPERIMENTALE POUR LA CONNEXION
-        connexion();
+        //connexion();
 
         //FIN PARTIE EXPERIMENTALE
 
@@ -85,7 +85,9 @@ public class Gestion_principale extends Activity {
                         Toast.makeText(Gestion_principale.this, "Non implémenté", Toast.LENGTH_SHORT).show();
                         break;
                     case 2 :
-                        Toast.makeText(Gestion_principale.this, "Non implémenté", Toast.LENGTH_SHORT).show();
+                        Intent intentDiapo = new Intent(Gestion_principale.this, Diapo.class);
+                        intentDiapo.putExtra("ADRESSE", adresse);
+                        startActivity(intentDiapo);
                         break;
                     case 3 :
                         Intent intentOptions = new Intent(Gestion_principale.this, Options_ordinateur.class);

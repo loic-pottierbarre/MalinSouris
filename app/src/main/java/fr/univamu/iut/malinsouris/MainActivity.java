@@ -31,13 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends FragmentActivity implements TestDialogue.NoticeDialogListener {
+public class MainActivity extends FragmentActivity {
 
     ListView listeOrdis = null;
     Button addOrdi = null;
     TextView textSelection = null;
     static String EXTRA = "tgducul";
-    TestDialogue test = new TestDialogue();
     private Set<BluetoothDevice> appareilsConnus;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
@@ -50,17 +49,6 @@ public class MainActivity extends FragmentActivity implements TestDialogue.Notic
             }
         }
     };
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        Toast.makeText(MainActivity.this, "Quelle polistesse :)", Toast.LENGTH_SHORT);
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
-        Toast.makeText(MainActivity.this, "Il a pas dit bonjour, on va lui...", Toast.LENGTH_SHORT);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
