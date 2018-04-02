@@ -32,6 +32,34 @@
         android:layout_alignParentRight="true"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/clicGauche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:text="Clic gauche"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/clicDroit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:text="Clic droit"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bouttonQuitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:text="Quitter"
+        />
+
 
 
 </RelativeLayout>

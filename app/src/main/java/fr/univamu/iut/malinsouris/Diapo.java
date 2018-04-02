@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 
 public class Diapo extends Activity {
-    Button avancer, revenir, quitter;
+    private Button avancer, revenir, quitter;
 
 
 
@@ -69,6 +69,9 @@ public class Diapo extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                Intent intent = new Intent(Diapo.this, Gestion_principale.class);
+                startActivity(intent);
             }
         });
     }

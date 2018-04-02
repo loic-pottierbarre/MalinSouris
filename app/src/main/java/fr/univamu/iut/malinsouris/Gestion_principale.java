@@ -52,7 +52,6 @@ public class Gestion_principale extends Activity {
 
         //PARTIE EXPERIMENTALE POUR LA CONNEXION
 
-        Connexion.setAdresse(adresse);
         connexion = Connexion.getINSTANCE(); //Ici on initialise la connexion entre l'ordi et le téléphone
 
         //Boite de dialogue après connection
@@ -83,6 +82,11 @@ public class Gestion_principale extends Activity {
                         switch(i) {
                     case 0 :
                         Intent intentControleSouris = new Intent(Gestion_principale.this, ControleSouris.class);
+                        try {
+                            Connexion.getINSTANCE().getOutputStream().write(1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         startActivity(intentControleSouris);
                         break;
                     case 1 :
@@ -90,6 +94,11 @@ public class Gestion_principale extends Activity {
                         break;
                     case 2 :
                         Intent intentDiapo = new Intent(Gestion_principale.this, Diapo.class);
+                        try {
+                            Connexion.getINSTANCE().getOutputStream().write(2);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         intentDiapo.putExtra("NOM", nomOrdi.getText());
                         startActivity(intentDiapo);
                         break;

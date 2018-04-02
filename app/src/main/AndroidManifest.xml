@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".Options_ordinateur"></activity>
         <activity android:name=".ControleSouris"></activity>
+        <activity android:name=".Diapo"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 /**
@@ -23,10 +24,10 @@ public class Connexion {
     private OutputStream outputStream;
     private InputStream inputStream;
 
-    private static String adresse;
+    private static   String adresse = "28:16:AD:BC:E9:D0";
 
     //INSTANCE
-    private static Connexion INSTANCE = new Connexion();
+    private static Connexion INSTANCE;
 
     public OutputStream getOutputStream() {
         return outputStream;
@@ -36,13 +37,22 @@ public class Connexion {
         return inputStream;
     }
 
+    public static byte [] float2ByteArray (float value)
+    {
+        return ByteBuffer.allocate(4).putFloat(value).array();
+    }
+
     private Connexion() {
 
+        //this.adresse = adr;
+
+        System.out.println("Je suis ici");
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         BluetoothDevice PC = btAdapter.getRemoteDevice(adresse);
 
         try {
+            System.out.println("PD");
             btSocket = PC.createRfcommSocketToServiceRecord(MY_UUID);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,6 +61,7 @@ public class Connexion {
         btAdapter.cancelDiscovery();
 
         try {
+            System.out.println("YO");
             btSocket.connect();
         } catch (IOException e) {
             try {
@@ -62,6 +73,7 @@ public class Connexion {
         }
 
         try {
+            System.out.println("Héhé");
             outputStream = btSocket.getOutputStream();
             inputStream = btSocket.getInputStream();
         } catch (IOException e) {
@@ -69,11 +81,9 @@ public class Connexion {
         }
     }
 
-    public static void setAdresse(String adr) {
-        adresse = adr;
-    }
-
     public static Connexion getINSTANCE() {
+        if(INSTANCE == null)
+            INSTANCE = new Connexion();
         return INSTANCE;
     }
 

@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity {
         addOrdi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bluetoothAdapter.startDiscovery();
+               Toast.makeText(MainActivity.this, "Non.", Toast.LENGTH_SHORT).show();
             }
         });
     }
