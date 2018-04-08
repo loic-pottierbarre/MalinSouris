@@ -24,7 +24,7 @@ public class Connexion {
     private OutputStream outputStream;
     private InputStream inputStream;
 
-    private static   String adresse = "28:16:AD:BC:E9:D0";
+    private static String adresse;
 
     //INSTANCE
     private static Connexion INSTANCE;
@@ -42,17 +42,16 @@ public class Connexion {
         return ByteBuffer.allocate(4).putFloat(value).array();
     }
 
+    public static void setAdresse(String adr) {
+        adresse = adr;
+    }
+
     private Connexion() {
-
-        //this.adresse = adr;
-
-        System.out.println("Je suis ici");
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
         BluetoothDevice PC = btAdapter.getRemoteDevice(adresse);
 
         try {
-            System.out.println("PD");
             btSocket = PC.createRfcommSocketToServiceRecord(MY_UUID);
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +60,6 @@ public class Connexion {
         btAdapter.cancelDiscovery();
 
         try {
-            System.out.println("YO");
             btSocket.connect();
         } catch (IOException e) {
             try {
@@ -73,7 +71,6 @@ public class Connexion {
         }
 
         try {
-            System.out.println("Héhé");
             outputStream = btSocket.getOutputStream();
             inputStream = btSocket.getInputStream();
         } catch (IOException e) {
@@ -85,6 +82,10 @@ public class Connexion {
         if(INSTANCE == null)
             INSTANCE = new Connexion();
         return INSTANCE;
+    }
+
+    public static void stop() {
+        INSTANCE = null;
     }
 
 }

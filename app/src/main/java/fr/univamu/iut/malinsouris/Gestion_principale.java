@@ -29,11 +29,8 @@ import java.util.UUID;
 
 public class Gestion_principale extends Activity {
 
-
-    //Adresse obtenue de la première activité
     private String adresse;
 
-    //Connexion que l'on instancie pour la première fois
     private Connexion connexion;
 
 
@@ -49,21 +46,11 @@ public class Gestion_principale extends Activity {
         final Intent intent = getIntent();
         nomOrdi.setText(intent.getStringExtra("NOM"));
         adresse = intent.getStringExtra("ADRESSE");
-
+        System.out.println("ADRESSE = " + adresse);
         //PARTIE EXPERIMENTALE POUR LA CONNEXION
 
-        connexion = Connexion.getINSTANCE(); //Ici on initialise la connexion entre l'ordi et le téléphone
-
-        //Boite de dialogue après connection
-        new AlertDialog.Builder(Gestion_principale.this)
-                .setTitle("Connexion")
-                .setMessage("La connexion a été créée !")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
-
+        Connexion.setAdresse(adresse);
+        connexion = Connexion.getINSTANCE();
 
         //FIN PARTIE EXPERIMENTALE
 
@@ -72,6 +59,7 @@ public class Gestion_principale extends Activity {
         menu.add("Obtenir de fichiers");
         menu.add("Lancer une présentation");
         menu.add("Options");
+        menu.add("Terminer la connexion");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Gestion_principale.this, android.R.layout.simple_list_item_1, menu);
         choix = (ListView)findViewById(R.id.menuChoix) ;
@@ -81,7 +69,7 @@ public class Gestion_principale extends Activity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         switch(i) {
                     case 0 :
-                        Intent intentControleSouris = new Intent(Gestion_principale.this, ControleSouris.class);
+                            Intent intentControleSouris = new Intent(Gestion_principale.this, ControleSouris.class);
                         try {
                             Connexion.getINSTANCE().getOutputStream().write(1);
                         } catch (IOException e) {
@@ -93,7 +81,7 @@ public class Gestion_principale extends Activity {
                         Toast.makeText(Gestion_principale.this, "Non implémenté", Toast.LENGTH_SHORT).show();
                         break;
                     case 2 :
-                        Intent intentDiapo = new Intent(Gestion_principale.this, Diapo.class);
+                          Intent intentDiapo = new Intent(Gestion_principale.this, Diapo.class);
                         try {
                             Connexion.getINSTANCE().getOutputStream().write(2);
                         } catch (IOException e) {
@@ -107,6 +95,15 @@ public class Gestion_principale extends Activity {
                         intentOptions.putExtra("NOM", nomOrdi.getText());
                         startActivity(intentOptions);
                         break;
+                    case 4:
+                        try {
+                            Connexion.getINSTANCE().getOutputStream().write(3); //Quitter
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Connexion.stop();
+                        Intent intentQuitter = new Intent(Gestion_principale.this, MainActivity.class);
+                        startActivity(intentQuitter);
                     default:
                         break;
                 }
